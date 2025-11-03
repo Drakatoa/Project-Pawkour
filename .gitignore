@@ -1,7 +1,7 @@
 [Ll]ibrary/
 [Tt]emp/
 [Ll]ogs/
-ProjectSettings/
 UserSettings/
+.plastic/
 *.slnx
 *.csproj
