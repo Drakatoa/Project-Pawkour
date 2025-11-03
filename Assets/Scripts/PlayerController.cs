@@ -74,6 +74,5 @@ public class PlayerController : MonoBehaviour
             velocity = velocity.normalized * maxMoveSpeed;
         }
         controller.Move(velocity * Time.deltaTime);
-        Debug.Log(velocity);
     }
 }
