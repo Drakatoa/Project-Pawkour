@@ -119,6 +119,79 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &114433451
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 97132148754321290, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504115281428629893, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
+      propertyPath: m_Name
+      value: Platform (3)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1ec4890a6f9a81343868376f40f10c75, type: 3}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,7 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraLook
   playerBody: {fileID: 904966761}
-  mouseSensitivity: 100
+  mouseSensitivity: 10
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,7 +720,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48b6b03b86218c46a16a05af5876ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  moveSpeed: 5
+  inputAccel: 20
+  maxMoveSpeed: 100
+  movementDecel: 5
+  jumpDecel: 15
+  airborneTargetVelocity: 20
   jumpHeight: 2
   gravity: -9.81
   cameraTransform: {fileID: 330585546}
@@ -841,4 +918,5 @@ SceneRoots:
   - {fileID: 2194636010978427308}
   - {fileID: 1077476371}
   - {fileID: 574856180}
+  - {fileID: 114433451}
   - {fileID: 904966761}
