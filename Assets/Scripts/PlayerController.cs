@@ -53,8 +53,6 @@ public class PlayerController : MonoBehaviour
             horizontalV = horizontalV.normalized * Mathf.Max(0, horizontalV.magnitude - jumpDecel * multiplier * Time.deltaTime);
         }
 
-        Debug.Log(horizontalV);
-
         velocity = new Vector3(horizontalV.x, velocity.y, horizontalV.y);
 
         // Ground check
