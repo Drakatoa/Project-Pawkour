@@ -74,5 +74,8 @@ public class PlayerController : MonoBehaviour
             velocity = velocity.normalized * maxMoveSpeed;
         }
         controller.Move(velocity * Time.deltaTime);
+
+        if (velocity.magnitude > 30 & !isGrounded)
+            velocity = Vector3.Lerp(velocity, f * velocity.magnitude, 4*Time.deltaTime);
     }
 }

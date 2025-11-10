@@ -4,10 +4,18 @@ using UnityEngine;
 public class CameraLook : MonoBehaviour
 {
     [SerializeField] private Transform playerBody;
+    [SerializeField] private CharacterController player;
     [SerializeField] private float mouseSensitivity = 100f;
 
+    [SerializeField] private float followRatio = 0.7f;
+    [SerializeField] private float rotRatio = 0.7f;
+
+    [SerializeField] private float ROTATION_CONSTANT = 4000f;
+
+    private Vector3 velocity = new Vector3(0,0,0);
     private PlayerInputController input;
-    private float xRotation = 0f;
+
+    private float prevMouseX = 0.0f;
 
     void Awake()
     {
@@ -21,10 +29,17 @@ public class CameraLook : MonoBehaviour
         float mouseX = look.x * mouseSensitivity * Time.deltaTime;
         float mouseY = look.y * mouseSensitivity * Time.deltaTime;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        Vector3 lookDirection = Vector3.Scale(new Vector3(1, 0, 1), playerBody.position - transform.position);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        playerBody.Rotate(Vector3.up * mouseX);
+        Vector3 targetPos = playerBody.position - lookDirection.normalized * 6 + Vector3.up * 2;
+
+        transform.position = Vector3.Lerp(transform.position, targetPos, followRatio * Mathf.Max(player.velocity.magnitude, 1) * Time.deltaTime);
+        if(mouseX < 0.005)
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), ROTATION_CONSTANT * rotRatio / player.velocity.magnitude * Time.deltaTime);
+
+        transform.RotateAround(playerBody.position, Vector3.up, Mathf.Lerp(prevMouseX, mouseX, 2 * Time.deltaTime));
+        // transform.RotateAround(playerBody.position, Quaternion.Euler(0,-90,0) * lookDirection, mouseY);
+
+        prevMouseX = mouseX;
     }
 }
