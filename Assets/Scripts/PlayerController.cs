@@ -74,5 +74,11 @@ public class PlayerController : MonoBehaviour
             velocity = velocity.normalized * maxMoveSpeed;
         }
         controller.Move(velocity * Time.deltaTime);
+
+        if (Vector3.Dot(input.MovementInputVector, Vector2.up) > 0)
+        {
+            Vector3 fNormal = Vector3.ProjectOnPlane(f * velocity.magnitude, Vector3.up) + Vector3.Project(velocity, Vector3.down);
+            velocity = Vector3.Lerp(velocity, fNormal, Time.deltaTime);
+        }
     }
 }

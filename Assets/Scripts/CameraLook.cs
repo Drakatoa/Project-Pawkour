@@ -4,10 +4,16 @@ using UnityEngine;
 public class CameraLook : MonoBehaviour
 {
     [SerializeField] private Transform playerBody;
+    [SerializeField] private CharacterController player;
     [SerializeField] private float mouseSensitivity = 100f;
-
+    [SerializeField] private float followRatio = 0.7f;
+    [SerializeField] private float rotRatio = 0.7f;
+    [SerializeField] private float horizontalRotationSensitivity = 0.2f;
     private PlayerInputController input;
-    private float xRotation = 0f;
+
+    private float cameraHeight = 2.0f;
+
+    private float xAccumulatedAngle = 0f;
 
     void Awake()
     {
@@ -21,10 +27,22 @@ public class CameraLook : MonoBehaviour
         float mouseX = look.x * mouseSensitivity * Time.deltaTime;
         float mouseY = look.y * mouseSensitivity * Time.deltaTime;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        Vector3 movementDirection = Vector3.Scale(new Vector3(1, 0, 1), playerBody.position - transform.position);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        playerBody.Rotate(Vector3.up * mouseX);
+        xAccumulatedAngle += mouseX;
+
+        Vector3 lookDirection = playerBody.position - transform.position;
+
+        cameraHeight += mouseY * horizontalRotationSensitivity;
+        cameraHeight = Mathf.Clamp(cameraHeight, -1, 4);
+
+        Vector3 targetPos = playerBody.position - movementDirection.normalized * 6 + Vector3.up * cameraHeight;
+
+        transform.position = Vector3.Lerp(transform.position, targetPos, followRatio * Mathf.Max(player.velocity.magnitude, 1) * Time.deltaTime);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), rotRatio * 20 * Time.deltaTime);
+
+        transform.RotateAround(playerBody.position, Vector3.up, xAccumulatedAngle * rotRatio * horizontalRotationSensitivity);
+        xAccumulatedAngle *= 1 - rotRatio * horizontalRotationSensitivity;
     }
 }
