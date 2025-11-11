@@ -9,8 +9,7 @@ public class CameraLook : MonoBehaviour
 
     [SerializeField] private float followRatio = 0.7f;
     [SerializeField] private float rotRatio = 0.7f;
-
-    [SerializeField] private float verticalRotationSensitivity = 0.02f;
+    [SerializeField] private float horizontalRotationSensitivity = 0.2f;
     private PlayerInputController input;
 
     private float cameraHeight = 2.0f;
@@ -35,7 +34,7 @@ public class CameraLook : MonoBehaviour
 
         Vector3 lookDirection = playerBody.position - transform.position;
 
-        cameraHeight += mouseY * verticalRotationSensitivity;
+        cameraHeight += mouseY * horizontalRotationSensitivity;
         cameraHeight = Mathf.Clamp(cameraHeight, -1, 4);
 
         Vector3 targetPos = playerBody.position - movementDirection.normalized * 6 + Vector3.up * cameraHeight;
@@ -44,7 +43,7 @@ public class CameraLook : MonoBehaviour
 
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), rotRatio * 20 * Time.deltaTime);
 
-        transform.RotateAround(playerBody.position, Vector3.up, xAccumulatedAngle * Time.deltaTime);
-        xAccumulatedAngle *= 1 - Time.deltaTime;
+        transform.RotateAround(playerBody.position, Vector3.up, xAccumulatedAngle * rotRatio * horizontalRotationSensitivity);
+        xAccumulatedAngle *= 1 - rotRatio * horizontalRotationSensitivity;
     }
 }
