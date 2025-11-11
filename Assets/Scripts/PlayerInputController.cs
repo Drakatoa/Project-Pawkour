@@ -25,7 +25,7 @@ public class PlayerInputController : MonoBehaviour
         {
             JumpPressed = true;
             // Allow jump buffering for 0.25s
-            jumpInputBuffer = 0.25f;
+            jumpInputBuffer = 0.10f;
         }
     }
 
@@ -36,10 +36,14 @@ public class PlayerInputController : MonoBehaviour
 
     void Update()
     {
-        jumpInputBuffer -= Time.deltaTime;
         if (jumpInputBuffer < 0)
         {
+            jumpInputBuffer = 0;
             ResetJumpFlag();
+        }
+        else
+        {
+            jumpInputBuffer -= Time.deltaTime;
         }
     }
 }

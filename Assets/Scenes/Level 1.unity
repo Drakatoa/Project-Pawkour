@@ -349,10 +349,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraLook
   playerBody: {fileID: 904966761}
   player: {fileID: 904966764}
-  mouseSensitivity: 10
+  mouseSensitivity: 25
   followRatio: 0.8
   rotRatio: 0.7
-  ROTATION_CONSTANT: 1000
+  verticalRotationSensitivity: 0.05
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
