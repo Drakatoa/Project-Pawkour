@@ -6,7 +6,6 @@ public class CameraLook : MonoBehaviour
     [SerializeField] private Transform playerBody;
     [SerializeField] private CharacterController player;
     [SerializeField] private float mouseSensitivity = 100f;
-
     [SerializeField] private float followRatio = 0.7f;
     [SerializeField] private float rotRatio = 0.7f;
     [SerializeField] private float horizontalRotationSensitivity = 0.2f;
