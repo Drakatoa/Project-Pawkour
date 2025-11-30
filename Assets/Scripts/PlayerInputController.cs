@@ -7,6 +7,8 @@ public class PlayerInputController : MonoBehaviour
     public Vector2 LookInputVector { get; private set; }
     public bool JumpPressed { get; private set; }
 
+    private float jumpInputBuffer = 0f;
+
     public void OnMove(InputValue inputValue)
     {
         MovementInputVector = inputValue.Get<Vector2>();
@@ -20,11 +22,28 @@ public class PlayerInputController : MonoBehaviour
     public void OnJump(InputValue inputValue)
     {
         if (inputValue.isPressed)
+        {
             JumpPressed = true;
+            // Allow jump buffering for 0.25s
+            jumpInputBuffer = 0.10f;
+        }
     }
 
     public void ResetJumpFlag()
     {
         JumpPressed = false;
+    }
+
+    void Update()
+    {
+        if (jumpInputBuffer < 0)
+        {
+            jumpInputBuffer = 0;
+            ResetJumpFlag();
+        }
+        else
+        {
+            jumpInputBuffer -= Time.deltaTime;
+        }
     }
 }
