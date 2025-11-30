@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float inputAccel = 10f;
     [SerializeField] private float maxMoveSpeed = 100f;
+    [SerializeField] private float wallRunJumpCoefficient = 0.1f;
     [SerializeField] private float movementDecel = 5f;
     [SerializeField] private float jumpDecel = 15f;
     [SerializeField] private float airborneTargetVelocity = 20f;
@@ -72,7 +73,7 @@ public class PlayerController : MonoBehaviour
             {
                 prevWall = collisions[0];
                 isWallRunning = true;
-                velocity.y = Mathf.Sqrt(-gravity) * jumpHeight + Mathf.Max(0, velocity.y);
+                velocity.y = Mathf.Sqrt(-gravity) * jumpHeight + Mathf.Max(0, velocity.y) * wallRunJumpCoefficient;
             }
         }
 
