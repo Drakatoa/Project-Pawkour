@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxMoveSpeed = 100f;
     [SerializeField] private float wallRunJumpCoefficient = 0.1f;
     [SerializeField] private float movementDecel = 5f;
-    [SerializeField] private float jumpDecel = 15f;
+    [SerializeField] private float jumpDecel = 5f;
     [SerializeField] private float airborneTargetVelocity = 20f;
     [SerializeField] private float slidingDecel = 2f;
     [SerializeField] private float jumpHeight = 2f;
