@@ -10,25 +10,61 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float movementDecel = 5f;
     [SerializeField] private float jumpDecel = 15f;
     [SerializeField] private float airborneTargetVelocity = 20f;
+    [SerializeField] private float slidingDecel = 2f;
     [SerializeField] private float jumpHeight = 2f;
-    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float gravity = -22f;
     [SerializeField] private Transform cameraTransform;
+    private struct LookWeight
+        {
+            public float weight;
+            public float body;
+            public float head;
+            public float eyes;
+
+            public LookWeight(float weight, float body, float head, float eyes)
+            {
+                this.weight = weight;
+                this.body = body;
+                this.head = head;
+                this.eyes = eyes;
+            }
+        }
 
     private CharacterController controller;
+    
+    private CapsuleCollider collid;
+
     private PlayerInputController input;
+
+    private Animator animator;
+
+    private AnimationHandler animate;
     private Vector3 velocity;
 
     private bool isWallRunning = false;
+
+    private float wallRotation = 0f;
+
+    private bool isSliding = false;
 
     private Collider prevWall = null;
 
     private LayerMask wallRunMask;
 
+    private LookWeight lw;
+
+    private Transform rig;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
         input = GetComponent<PlayerInputController>();
+        animator = GetComponent<Animator>();
+        animate = new AnimationHandler(animator, "Vert", "State");
         wallRunMask = LayerMask.GetMask("Wall Run");
+        lw = new LookWeight(0.8f, 0.8f, 0.8f, 0.8f);
+        rig = transform.Find("Kitty_001_rig").Find("Root");
+        collid = GetComponent<CapsuleCollider>();
     }
 
     void Update()
@@ -53,6 +89,12 @@ public class PlayerController : MonoBehaviour
 
         horizontalV += deltaVelocity;
 
+        // Apply Slide Decel
+        if(input.CrouchPressed && isGrounded)
+        {
+            horizontalV = horizontalV.normalized * Mathf.Max(0, horizontalV.magnitude - movementDecel * Time.deltaTime);
+        }
+
         //JumpDecel
         if (!isGrounded)
         {
@@ -63,8 +105,8 @@ public class PlayerController : MonoBehaviour
 
         velocity = new Vector3(horizontalV.x, velocity.y, horizontalV.y);
         
-        Collider[] collisions = Physics.OverlapCapsule(transform.position + Vector3.up * controller.height / 2, transform.position - Vector3.up * controller.height / 2,
-                                    controller.radius + 0.1f, wallRunMask);
+        Collider[] collisions = Physics.OverlapCapsule(transform.position + Vector3.up * collid.radius, transform.position - Vector3.up * collid.height,
+                                    collid.height + 0.1f, wallRunMask);
 
         // Wall Running
         if (!isWallRunning && !isGrounded)
@@ -74,12 +116,15 @@ public class PlayerController : MonoBehaviour
                 prevWall = collisions[0];
                 isWallRunning = true;
                 velocity.y = Mathf.Sqrt(-gravity) * jumpHeight + Mathf.Max(0, velocity.y) * wallRunJumpCoefficient;
+                bool isLeft = true;
+                wallRotation = (isLeft ? 1f : -1f) * 90f;
             }
         }
 
         if(isWallRunning && collisions.Length < 1)
         {
             isWallRunning = false;
+            wallRotation = 0f;
         }
         
         // Wall Run Jump
@@ -96,9 +141,10 @@ public class PlayerController : MonoBehaviour
             velocity.y = Mathf.Sqrt(-jumpHeight * gravity);
             input.ResetJumpFlag();
             isWallRunning = false;
+            wallRotation = 0f;
         }
 
-        if(isGrounded)
+        if(isGrounded && isWallRunning)
         {
             prevWall = null;
             isWallRunning = false;
@@ -130,5 +176,51 @@ public class PlayerController : MonoBehaviour
             velocity = Vector3.Lerp(velocity, fNormal, Time.deltaTime);
         }
 
+        // Animation
+        animate.Animate(horizontalV, (velocity.magnitude > 2f) ? 1f : 0f, Time.deltaTime);
+        if(velocity.magnitude > 2f) {
+            rig.rotation = Quaternion.RotateTowards(rig.rotation, Quaternion.LookRotation(-velocity) * Quaternion.AngleAxis(wallRotation, transform.forward), 200 * Time.deltaTime);
+        }
     }
+
+    private void OnAnimatorIK()
+    {
+        animate.AnimateIK(transform.position, lw);
+    }
+
+    #region Handlers
+    private class AnimationHandler
+        {
+            private readonly Animator m_Animator;
+            private readonly string m_VerticalID;
+            private readonly string m_StateID;
+
+            private readonly float k_InputFlow = 4.5f;
+
+            private float m_FlowState;
+            private Vector2 m_FlowAxis;
+
+            public AnimationHandler(Animator animator, string verticalID, string stateID)
+            {
+                m_Animator = animator;
+                m_VerticalID = verticalID;
+                m_StateID = stateID;
+            }
+
+            public void Animate(in Vector2 axis, float state, float deltaTime)
+            {
+                m_Animator.SetFloat(m_VerticalID, m_FlowAxis.magnitude);
+                m_Animator.SetFloat(m_StateID, Mathf.Clamp01(m_FlowState));
+
+                m_FlowAxis = Vector2.ClampMagnitude(m_FlowAxis + k_InputFlow * deltaTime * (axis - m_FlowAxis).normalized, 1f);
+                m_FlowState = Mathf.Clamp01(m_FlowState + k_InputFlow * deltaTime * Mathf.Sign(state - m_FlowState));
+            }
+
+            public void AnimateIK(in Vector3 target, in LookWeight lookWeight)
+            {
+                m_Animator.SetLookAtPosition(target);
+                m_Animator.SetLookAtWeight(lookWeight.weight, lookWeight.body, lookWeight.head, lookWeight.eyes);
+            }
+        }
+        #endregion
 }

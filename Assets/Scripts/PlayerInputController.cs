@@ -7,6 +7,8 @@ public class PlayerInputController : MonoBehaviour
     public Vector2 LookInputVector { get; private set; }
     public bool JumpPressed { get; private set; }
 
+    public bool CrouchPressed { get; private set; }
+
     private float jumpInputBuffer = 0f;
 
     public void OnMove(InputValue inputValue)
@@ -29,14 +31,24 @@ public class PlayerInputController : MonoBehaviour
         }
     }
 
+    public void OnCrouch(InputValue inputValue)
+    {
+        CrouchPressed = inputValue.isPressed;
+    }
+
     public void ResetJumpFlag()
     {
         JumpPressed = false;
     }
 
+    public void ResetCrouchFlag()
+    {
+        CrouchPressed = false;
+    }
+
     void Update()
     {
-        if (jumpInputBuffer < 0)
+        if (jumpInputBuffer <= 0)
         {
             jumpInputBuffer = 0;
             ResetJumpFlag();
