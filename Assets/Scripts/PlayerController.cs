@@ -116,8 +116,15 @@ public class PlayerController : MonoBehaviour
                 prevWall = collisions[0];
                 isWallRunning = true;
                 velocity.y = Mathf.Sqrt(-gravity) * jumpHeight + Mathf.Max(0, velocity.y) * wallRunJumpCoefficient;
-                bool isLeft = true;
-                wallRotation = (isLeft ? 1f : -1f) * 90f;
+                Vector3 collisionPoint = Physics.ClosestPoint(prevWall.transform.position, collid, transform.position, transform.rotation);
+                Vector3 toPos = collisionPoint - transform.position;
+                Debug.Log(collisionPoint);
+                Debug.Log(transform.position);
+                Debug.DrawRay(transform.position, collisionPoint - transform.position, Color.red, 20f);
+                Vector3 bwd = transform.rotation * -transform.forward;
+                Debug.DrawRay(transform.position, bwd * 2, Color.azure, 20f);
+                bool isRight = Vector2.Dot(new Vector2(bwd.x, bwd.z), new Vector2(toPos.x, toPos.z)) >= 0;
+                wallRotation = (isRight ? 1f : -1f) * 90f;
             }
         }
 
@@ -179,7 +186,7 @@ public class PlayerController : MonoBehaviour
         // Animation
         animate.Animate(horizontalV, (velocity.magnitude > 2f) ? 1f : 0f, Time.deltaTime);
         if(velocity.magnitude > 2f) {
-            rig.rotation = Quaternion.RotateTowards(rig.rotation, Quaternion.LookRotation(-velocity) * Quaternion.AngleAxis(wallRotation, transform.forward), 200 * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity) * Quaternion.AngleAxis(wallRotation, Vector3.Scale(transform.right, new Vector3(1,0,1))), 300 * Time.deltaTime);
         }
     }
 
