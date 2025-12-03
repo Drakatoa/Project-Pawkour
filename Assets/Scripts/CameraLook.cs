@@ -35,7 +35,6 @@ public class CameraLook : MonoBehaviour
         float mouseX = look.x * mouseSensitivity * Time.deltaTime;
         float mouseY = look.y * mouseSensitivity * Time.deltaTime;
 
-
         xAccumulatedAngle += mouseX;
 
         transform.RotateAround(playerBody.position, Vector3.up, xAccumulatedAngle * rotRatio * horizontalRotationSensitivity);
@@ -44,27 +43,28 @@ public class CameraLook : MonoBehaviour
         Vector3 movementDirection = Vector3.Scale(new Vector3(1, 0, 1), playerBody.position - transform.position);
 
         cameraHeight += mouseY * horizontalRotationSensitivity;
-        cameraHeight = Mathf.Clamp(cameraHeight, 0, 4);
+        cameraHeight = Mathf.Clamp(cameraHeight, 0.4f, 4);
 
         Vector3 targetPos = playerBody.position - movementDirection.normalized * 6 + Vector3.up * cameraHeight;
 
-        RaycastHit hit;
-        Vector3 playerHit = Vector3.zero;
-        List<Vector3> positions = new List<Vector3>
-        {
-            targetPos
-        };
-        if(Physics.Raycast(targetPos, playerBody.position - targetPos, out hit, 50f, playerMask))
-        {
-            playerHit = hit.point;
-        }
-        while (Physics.Raycast(targetPos - (playerHit - targetPos).normalized * 0.3f, (playerHit - targetPos).normalized, out hit, (playerHit - targetPos).magnitude + 0.2f, ~playerMask))
-        {
-            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            transform.position = hit.point + (playerHit-targetPos).normalized * 0.5f;
-            targetPos = transform.position;
-            positions.Add(targetPos);
-        }
+        //RaycastHit hit;
+        // Vector3 playerHit = Vector3.zero;
+        // List<Vector3> positions = new List<Vector3>
+        // {
+        //     targetPos
+        // };
+        // if(Physics.Raycast(targetPos, playerBody.position - targetPos, out hit, 50f, playerMask))
+        // {
+        //     playerHit = hit.point;
+        // }
+        // while (Physics.Raycast(targetPos - (playerHit - targetPos).normalized * 0.3f, (playerHit - targetPos).normalized, out hit, (playerHit - targetPos).magnitude + 0.2f, ~playerMask))
+        // {
+        //     //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+        //     transform.position = hit.point + (playerHit-targetPos).normalized * 0.5f;
+        //     targetPos = transform.position;
+        //     positions.Add(targetPos);
+        // }
+
         // if(positions.Count > 1)
         // {
         //     Debug.Log(curPos + " " + String.Join(", ", positions));
