@@ -13,6 +13,9 @@ public class Teleport : MonoBehaviour
         {
             playerg.SetActive(false);
             player.position = Destination.position;
+            player.rotation = Destination.rotation;
+            PlayerController pc = playerg.GetComponent<PlayerController>();
+            pc.Reset();
             playerg.SetActive(true);
         }
     }

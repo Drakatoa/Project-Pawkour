@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6052853494746766066}
   - component: {fileID: 80787877619395400}
   - component: {fileID: 2755698850601573701}
+  - component: {fileID: 6043029031686152295}
   m_Layer: 0
   m_Name: pCube12
   m_TagString: Untagged
@@ -89,6 +90,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6043029031686152295
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3540706977059277386}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.8553827, y: 1.0722271, z: 1.3691909}
+  m_Center: {x: -0.00000029802322, y: 0, z: 0.00000029802322}
 --- !u!1 &4116551461671945777
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,6 +388,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7469550522820234003}
   - component: {fileID: -3161635630272732588}
+  - component: {fileID: -3820944727022785709}
   m_Layer: 0
   m_Name: table with drawers
   m_TagString: Untagged
@@ -415,6 +438,27 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!65 &-3820944727022785709
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846110631755829673}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.054002, y: 1.2154695, z: 1.501434}
+  m_Center: {x: -0.056335807, y: 0.49923903, z: -0.018953502}
 --- !u!1 &8556838124170796037
 GameObject:
   m_ObjectHideFlags: 0
