@@ -22,9 +22,7 @@ public class OptionsManager : MonoBehaviour
     
     void Start()
     {
-        LoadSettings();
-        
-        // Connect sliders to update functions
+        // 1. Setup listeners FIRST
         if (masterVolumeSlider != null)
             masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
         
@@ -36,6 +34,9 @@ public class OptionsManager : MonoBehaviour
         
         if (mouseSensitivitySlider != null)
             mouseSensitivitySlider.onValueChanged.AddListener(SetMouseSensitivity);
+
+        // 2. Then load the saved data
+        LoadSettings();
     }
     
     public void SetMasterVolume(float volume)
@@ -87,20 +88,35 @@ public class OptionsManager : MonoBehaviour
         float musicVol = PlayerPrefs.GetFloat("MusicVolume", 1f);
         float mouseSens = PlayerPrefs.GetFloat("MouseSensitivity", 1f);
         
-        // Apply to sliders
+        // --- MASTER VOLUME ---
         if (masterVolumeSlider != null)
             masterVolumeSlider.value = masterVol;
-        
+        // FIX: Manually update the text right now
+        if (masterVolumeValue != null)
+            masterVolumeValue.text = Mathf.RoundToInt(masterVol * 100).ToString();
+            
+        // --- SFX VOLUME ---
         if (sfxSlider != null)
             sfxSlider.value = sfxVol;
-        
+        // FIX: Manually update the text right now
+        if (sfxValue != null)
+            sfxValue.text = Mathf.RoundToInt(sfxVol * 100).ToString();
+            
+        // --- MUSIC VOLUME ---
         if (musicSlider != null)
             musicSlider.value = musicVol;
-        
+        // FIX: Manually update the text right now
+        if (musicValue != null)
+            musicValue.text = Mathf.RoundToInt(musicVol * 100).ToString();
+            
+        // --- MOUSE SENSITIVITY ---
         if (mouseSensitivitySlider != null)
             mouseSensitivitySlider.value = mouseSens;
+        // FIX: Manually update the text right now
+        if (mouseSensitivityValue != null)
+            mouseSensitivityValue.text = Mathf.RoundToInt(mouseSens * 100).ToString();
         
-        // Apply master volume immediately
+        // Apply master volume immediately to the game engine
         AudioListener.volume = masterVol;
     }
 }
