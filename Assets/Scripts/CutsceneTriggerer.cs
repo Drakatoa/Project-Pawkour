@@ -1,16 +1,18 @@
 using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CutsceneTriggerer : MonoBehaviour
 {
     [SerializeField]
-    GameObject kitty, train, cam, door;
+    GameObject kitty, train, cam, door, sceneFader;
 
     Vector3 camTargetPos, catTargetPos;
     float followRatio;
 
     private Animator catAnim, doorAnim, trainAnim;
+    SceneFadeIn sceneFade;
 
     private int state = -1;
     private float currentTime;
@@ -84,8 +86,26 @@ public class CutsceneTriggerer : MonoBehaviour
                 break;
             case 4:
                 trainAnim.SetTrigger("MoveTrain");
-                Debug.DrawRay(cam.transform.position, train.transform.position + trainOffset - cam.transform.position, Color.aliceBlue, 20f);
+                // Debug.DrawRay(cam.transform.position, train.transform.position + trainOffset - cam.transform.position, Color.aliceBlue, 20f);
                 cam.transform.rotation = Quaternion.Slerp(cam.transform.rotation, Quaternion.LookRotation(train.transform.position + trainOffset - cam.transform.position), 0.8f * 20 * Time.deltaTime);
+                currentTime += Time.deltaTime;
+                if(currentTime > 5f)
+                {
+                    state = 5;
+                    currentTime = 0;
+                }
+                break;
+            case 5:
+                if(sceneFader != null) {
+                    sceneFader.SetActive(true);
+                    sceneFade.Fade();
+                }
+                sceneFader = null;
+                currentTime += Time.deltaTime;
+                if(currentTime > 4f)
+                {
+                    SceneManager.LoadScene("MainMenu");
+                }
                 break;
             default:
                 break;
@@ -98,6 +118,7 @@ public class CutsceneTriggerer : MonoBehaviour
         catAnim = kitty.GetComponent<Animator>();
         doorAnim = door.GetComponent<Animator>();
         trainAnim = train.GetComponent<Animator>();
+        sceneFade = sceneFader.GetComponent<SceneFadeIn>();
         AudioController ac = kitty.GetComponent<AudioController>();
         ac.enabled = false;
         int HIGH_CLIP = 2;
