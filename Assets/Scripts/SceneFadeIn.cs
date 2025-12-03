@@ -31,7 +31,12 @@ public class SceneFadeIn : MonoBehaviour
     IEnumerator FadeFromBlack()
     {
         float elapsed = 0f;
-
+        while(elapsed < 1)
+        {
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        elapsed = 0f;
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
