@@ -14,6 +14,7 @@ public class Teleport : MonoBehaviour
             playerg.SetActive(false);
             player.position = Destination.position;
             player.rotation = Destination.rotation;
+            playerg.GetComponent<PlayerController>().velocity = Vector3.zero;
             playerg.SetActive(true);
         }
     }

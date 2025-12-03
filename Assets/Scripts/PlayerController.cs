@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
 
     private AnimationHandler animate;
-    private Vector3 velocity;
+    public Vector3 velocity;
 
     private bool isWallRunning = false;
 
@@ -187,6 +187,10 @@ public class PlayerController : MonoBehaviour
         animate.Animate(horizontalV, (velocity.magnitude > 2f) ? 1f : 0f, Time.deltaTime);
         if(velocity.magnitude > 2f) {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity) * Quaternion.AngleAxis(wallRotation, Vector3.Scale(transform.right, new Vector3(1,0,1))), 300 * Time.deltaTime);
+        } 
+        else
+        {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(Vector3.Scale(transform.rotation.eulerAngles, new Vector3(0,1,0))), 500 * Time.deltaTime);
         }
     }
 
