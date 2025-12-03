@@ -33,7 +33,7 @@ public class CutsceneTriggerer : MonoBehaviour
                 cam.transform.position = Vector3.Lerp(cam.transform.position, camTargetPos, followRatio * Time.deltaTime);
                 kitty.transform.rotation = Quaternion.Slerp(kitty.transform.rotation, Quaternion.Euler(0,90,0), 0.8f * Time.deltaTime);
                 nextCatPos = Vector3.Lerp(kitty.transform.position, catTargetPos, followRatio * 2 * Time.deltaTime);
-                Debug.Log((nextCatPos - kitty.transform.position).magnitude);
+                // Debug.Log((nextCatPos - kitty.transform.position).magnitude);
                 catAnim.SetFloat("State", (nextCatPos - kitty.transform.position).magnitude * 1000f);
                 kitty.transform.position = nextCatPos;
                 currentTime += Time.deltaTime;
@@ -59,7 +59,7 @@ public class CutsceneTriggerer : MonoBehaviour
                 cam.transform.position = Vector3.Lerp(cam.transform.position, camTargetPos, followRatio * Time.deltaTime);
                 kitty.transform.rotation = Quaternion.Slerp(kitty.transform.rotation, Quaternion.Euler(0,90,0), 0.8f * Time.deltaTime);
                 nextCatPos = Vector3.Lerp(kitty.transform.position, catTargetPos, followRatio * 2 * Time.deltaTime);
-                Debug.Log((nextCatPos - kitty.transform.position).magnitude);
+                // Debug.Log((nextCatPos - kitty.transform.position).magnitude);
                 catAnim.SetFloat("State", (nextCatPos - kitty.transform.position).magnitude * 1000f);
                 kitty.transform.position = nextCatPos;
                 currentTime += Time.deltaTime;
@@ -98,6 +98,10 @@ public class CutsceneTriggerer : MonoBehaviour
         catAnim = kitty.GetComponent<Animator>();
         doorAnim = door.GetComponent<Animator>();
         trainAnim = train.GetComponent<Animator>();
+        AudioController ac = kitty.GetComponent<AudioController>();
+        ac.enabled = false;
+        int HIGH_CLIP = 2;
+        ac.SwitchToClip(HIGH_CLIP);
         Destroy(kitty.GetComponent<PlayerController>());
         Destroy(cam.GetComponent<CameraLook>());
         camTargetPos = new Vector3(33.881f, 8, -142.838f);

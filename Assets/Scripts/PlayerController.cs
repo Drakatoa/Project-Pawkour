@@ -69,45 +69,6 @@ public class PlayerController : MonoBehaviour
         rig = transform.Find("Kitty_001_rig").Find("Root");
         collid = GetComponent<CapsuleCollider>();
         
-        // Setup jump audio source - create a DEDICATED AudioSource that won't interfere with music
-        if (jumpAudioSource == null)
-        {
-            jumpAudioSource = gameObject.AddComponent<AudioSource>();
-        }
-        
-        // Configure jump AudioSource to be completely independent and won't affect music
-        jumpAudioSource.playOnAwake = false;
-        jumpAudioSource.loop = false;
-        jumpAudioSource.spatialBlend = 0f; // 2D sound
-        jumpAudioSource.volume = 1.0f; // Full volume
-        jumpAudioSource.priority = 128; // Normal priority (won't interrupt music)
-        
-        // Load cat meow sound from Resources (try multiple possible names)
-        AudioClip meowClip = Resources.Load<AudioClip>("SFX/cat-meow-8-fx-306184");
-        if (meowClip == null)
-        {
-            // Try searching all clips in SFX folder
-            AudioClip[] allClips = Resources.LoadAll<AudioClip>("SFX");
-            foreach (AudioClip clip in allClips)
-            {
-                if (clip != null && (clip.name.Contains("meow") || clip.name.Contains("Meow") || clip.name.Contains("cat-meow")))
-                {
-                    meowClip = clip;
-                    break;
-                }
-            }
-        }
-        
-        // Cache the meow clip
-        if (meowClip != null)
-        {
-            this.meowClip = meowClip;
-            // Don't assign clip to AudioSource - we'll use PlayOneShot instead
-        }
-        else
-        {
-            Debug.LogWarning("[PlayerController] Could not find cat meow sound. Please assign it manually in the Inspector.");
-        }
     }
 
     void Update()
@@ -161,8 +122,8 @@ public class PlayerController : MonoBehaviour
                 velocity.y = Mathf.Sqrt(-gravity) * jumpHeight + Mathf.Max(0, velocity.y) * wallRunJumpCoefficient;
                 Vector3 collisionPoint = Physics.ClosestPoint(prevWall.transform.position, collid, transform.position, transform.rotation);
                 Vector3 toPos = collisionPoint - transform.position;
-                Debug.Log(collisionPoint);
-                Debug.Log(transform.position);
+                // Debug.Log(collisionPoint);
+                // Debug.Log(transform.position);
                 Debug.DrawRay(transform.position, collisionPoint - transform.position, Color.red, 20f);
                 Vector3 bwd = transform.rotation * -transform.forward;
                 Debug.DrawRay(transform.position, bwd * 2, Color.azure, 20f);
@@ -287,7 +248,7 @@ public class PlayerController : MonoBehaviour
             // PlayOneShot plays independently - won't stop or interfere with music
             // Volume 1.5 = 150% (louder than normal, Unity will clamp to valid range)
             // This ensures the meow is clearly audible over the music
-            jumpAudioSource.PlayOneShot(meowClip, 1.5f);
+            jumpAudioSource.PlayOneShot(meowClip, 0.33f);
         }
     }
 }
