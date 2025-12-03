@@ -56,8 +56,6 @@ public class PlayerController : MonoBehaviour
 
     private LookWeight lw;
 
-    private Transform rig;
-
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -66,7 +64,6 @@ public class PlayerController : MonoBehaviour
         animate = new AnimationHandler(animator, "Vert", "State");
         wallRunMask = LayerMask.GetMask("Wall Run");
         lw = new LookWeight(0.8f, 0.8f, 0.8f, 0.8f);
-        rig = transform.Find("Kitty_001_rig").Find("Root");
         collid = GetComponent<CapsuleCollider>();
         
     }
@@ -203,6 +200,14 @@ public class PlayerController : MonoBehaviour
     private void OnAnimatorIK()
     {
         animate.AnimateIK(transform.position, lw);
+    }
+
+    public void Reset()
+    {
+        velocity = Vector3.zero;
+        isWallRunning = false;
+        isSliding = false;
+        prevWall = null;
     }
 
     #region Handlers
