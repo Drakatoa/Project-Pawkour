@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float gravity = -22f;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private AudioSource jumpAudioSource;
-    private AudioClip meowClip; // Cache the meow clip
+    [SerializeField] private AudioClip meowClip; // Cache the meow clip
     
     private struct LookWeight
         {

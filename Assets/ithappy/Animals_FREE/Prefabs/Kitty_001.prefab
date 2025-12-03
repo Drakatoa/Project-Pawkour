@@ -908,6 +908,7 @@ GameObject:
   - component: {fileID: 6397291155531275066}
   - component: {fileID: 5020605745425037690}
   - component: {fileID: 5624680827431895728}
+  - component: {fileID: 7055055993834561529}
   m_Layer: 3
   m_Name: Kitty_001
   m_TagString: Player
@@ -925,8 +926,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2433019566664857932}
   - {fileID: 8791132946461290804}
@@ -951,10 +952,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.16
-  m_Height: 0.62
+  m_Radius: 0.14
+  m_Height: 0.6
   m_Direction: 2
-  m_Center: {x: 0, y: 0.16, z: 0}
+  m_Center: {x: 0, y: 0.17, z: -0.05}
 --- !u!114 &1632284980782242688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1003,13 +1004,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 0.63
-  m_Radius: 0.26
+  m_Height: 0.3
+  m_Radius: 0.16
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.31, z: 0}
+  m_Center: {x: 0, y: 0.17, z: 0}
 --- !u!95 &6397291155531275066
 Animator:
   serializedVersion: 7
@@ -1057,15 +1058,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   inputAccel: 20
-  maxMoveSpeed: 100
+  maxMoveSpeed: 200
   wallRunJumpCoefficient: 0.1
   movementDecel: 5
-  jumpDecel: 15
-  airborneTargetVelocity: 40
+  jumpDecel: 5
+  airborneTargetVelocity: 60
   slidingDecel: 2
   jumpHeight: 2
-  gravity: -9.81
+  gravity: -16
   cameraTransform: {fileID: 0}
+  jumpAudioSource: {fileID: 0}
+  meowClip: {fileID: 8300000, guid: 338c2e8513081234aa9a0f49dbfe7487, type: 3}
+  velocity: {x: 0, y: 0, z: 0}
+--- !u!114 &7055055993834561529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6397291155531275063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5908122fbc45666418f3bfce0c765d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioController
+  lowVelocityClip: {fileID: 0}
+  mediumVelocityClip: {fileID: 0}
+  highVelocityClip: {fileID: 0}
+  playerController: {fileID: 6397291155531275067}
+  mediumThreshold: 5
+  highThreshold: 25
+  fadeDuration: 1
+  debugVelocity: 0
+  maxVol: 0.25
 --- !u!1 &6499904794721092959
 GameObject:
   m_ObjectHideFlags: 0
